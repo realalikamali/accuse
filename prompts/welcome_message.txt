@@ -1,0 +1,9 @@
+Welcome to Accuse, an interactive chat-based adventure, where you take the role of a detective and interview suspects to solve a mysterious murder case.
+
+Two men, James and Alex, and two women, Jennifer and Cindy, all in their mid to late twenties, go on a camping trip together for a week.Alex is found shot dead on the morning of their 7th day together.
+
+Select a character to interview from the sidebar and ask questions to uncover the truth!
+
+You have two interview rounds with each character and allowed to have {permissible_length_of_chat} interactions with each character in each round. Once you start your conversation with any character, you must finish those {permissible_length_of_chat} interactions before moving to the next person. Once the first round ends, the second round follows with the same rules.
+
+At any point, you are free to solve the case by guessing the killer.

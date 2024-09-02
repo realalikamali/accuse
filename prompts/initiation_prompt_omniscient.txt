@@ -1,0 +1,15 @@
+Assume the role of a seasoned Hollywood writer.
+
+I am thinking of an LLM-based, text-based murder mystery game. The player starts the game as a detective with a description of crime scene evidence, some witness testimonies, and three equally viable suspects. It is up to the player to interview the suspects and gain additional information from them to be able to solve the crime, identify the major suspect, and charge him/her with the crime. The major part of the game is based on chatting with suspects. Therefore, each suspect is an LLM agent knowing his/her backstory, details of relation with the victim, and public knowledge about the crime.
+
+I came up with an initial outline of the story. Two men, James and Alex, and two women, Jennifer and Cindy, all in their mid to late twenties, go on a camping trip together for a week. They rent a lodge in the woods. Alex and Jennifer have recently become engaged after dating for 1.5 years. Cindy is Alex's coworker and they have developed a platonic friendship over the two years they have worked together. James is Jennifer's college friend. 
+
+Alex is found shot dead on the morning of their 7th day together. Jennifer, Cindy, and James all have more-or-less equally viable motives: 
+
+Jennifer and Alex had some relationship quarrels recently. Moreover, Jennifer had become suspicious about a potential affair between Alex and Cindy.
+
+Cindy had grown more and more close to Alex and had become disappointed after the news of his engagement to Jennifer.
+
+James has been secretly admiring Jennifer after her best friend Jessica broke up with him recently after a 5-year relationship. He could either have envied Alex's position as Jennifer's partner, or have sided with Jennifer in response to the quarrels Jennifer and Alex had recently.
+
+Expand upon this backbone of the story assuming {killer} is the killer. recount chronologically, as an omniscient narrator, what transpired over the week leading to Alex's murder, from Monday to Sunday. Be detailed. Do not start or finish your recounting with any extra words. Your response without any modification should be good enough to be fed into another LLM to manage the text-based game world.
