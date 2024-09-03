@@ -3,7 +3,7 @@ import os
 import openai
 from dotenv import load_dotenv, find_dotenv
 from models.character import CharacterGen
-from models.controls import QuestionCap, KnowItAll, POVExtractor
+from models.controls import QuestionCap, KnowItAll, POVExtractor, EvidenceExtractor
 from PIL import Image
 import random
 
@@ -23,10 +23,16 @@ character_avatar_emojis = {'Jennifer': '👩',
 @st.cache_resource
 def startup_proceses():
     questioncap = QuestionCap()
-    knowitall = KnowItAll(os.path.join('prompts','initiation_prompt_omniscient.txt'))
+    knowitall = KnowItAll(os.path.join('prompts','initiation_prompt_omniscient.txt'), temperature=0.4)
     # randomly choose a killer using np.random.choice
     killer = random.choice(['Jennifer', 'Cindy', 'James'])
     backstory = knowitall.chain.invoke({'killer': killer})
+
+    evidenceextractor = EvidenceExtractor(backstory, model_name='gpt-4o', temperature=0.4)
+    extracted_info = evidenceextractor.chain.invoke({})
+
+    backstory = extracted_info['updated_story']
+    pieces_of_evidence = extracted_info['people']
 
     povextractor = POVExtractor(backstory, model_name='gpt-4o', temperature=0.0)
     individual_povs = povextractor.chain.invoke({})
@@ -42,9 +48,9 @@ def startup_proceses():
         for character_name in ['Jennifer', 'Cindy', 'James']
     }
 
-    return questioncap, killer, backstory, individual_povs, agents
+    return questioncap, killer, pieces_of_evidence, backstory, individual_povs, agents
 
-questioncap, killer, backstory, individual_povs, agents = startup_proceses()
+questioncap, killer, pieces_of_evidence, backstory, individual_povs, agents = startup_proceses()
 
 # set up session state variables
 if 'number_of_messages' not in st.session_state:
@@ -82,7 +88,11 @@ if radio == "Intro":
         welcome_message = file.read()
     welcome_message = welcome_message.format(permissible_length_of_chat = 10)
 
-    container_top.write(welcome_message)
+    pieces_of_evidence_description = ""
+    for person in pieces_of_evidence:
+        pieces_of_evidence_description += f"{person['name']}: {person['spoiler_free_description']}\n\n"
+
+    container_top.write(welcome_message+ '\n\nPieces of evidence:\n\n' + pieces_of_evidence_description)
 
     # Read the cover photo
     cover_photo = Image.open("m_mystery_cover_photo.webp")

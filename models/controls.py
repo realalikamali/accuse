@@ -4,13 +4,14 @@ from langchain_core.utils.function_calling import convert_to_openai_function
 
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
-from langchain.output_parsers.openai_functions import JsonKeyOutputFunctionsParser
+from langchain.output_parsers.openai_functions import JsonKeyOutputFunctionsParser, JsonOutputFunctionsParser
 from langchain_core.output_parsers import StrOutputParser
 
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.prompts import PromptTemplate
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_openai import ChatOpenAI
+from typing import List
 
 class KnowItAll:
     def __init__(self, prompt_path, model_name='gpt-4o', temperature= 0.2):
@@ -57,8 +58,7 @@ class POVExtractor:
     def create_prompt(self):
         
         instructions_pre = "The following is the events leading up to someone\'s murder on a camping trip. \n\n"
-        instructions_post = ("\n\nYour task is to extract the events that each of the remaining three characters."
-                            " Be detailed in recounting the events from each character\'s point of view."
+        instructions_post = ("\n\nRecount the events from each character\'s point of view in a detailed manner."
                             " Include their thoughts, feelings, and actions. Use first person perspective."
                             " Ensure that the recounting done by the three characters do not contradict each other")
 
@@ -83,6 +83,57 @@ class EventsRecounting(BaseModel):
     Cindy: str = Field(description="Description of the events from Cindy's point of view in first person")
     James: str = Field(description="Description of the events from James' point of view in first person")
 
+class EvidenceExtractor:
+    def __init__(self, backstory, model_name='gpt-4o', temperature= 0.2):
+
+        self.model_name = model_name
+        self.temperature = temperature
+        self.backstory = backstory
+        self.model = self.initialize_model()
+        self.prompt = self.create_prompt()
+        self.chain = self.create_chain()
+
+    def initialize_model(self):
+        model = ChatOpenAI(model=self.model_name)
+        model.temperature = self.temperature
+        return model
+
+    def create_prompt(self):
+
+        pre_prompt = (
+            "You are trying to devise the backstory to a compelling murder mystery game. "
+            "Using the following story, come up with three physical pieces of evidence "
+            "and create an updated story that incorporates those components directly into the story "
+            "rather than stating them after the end of the events. "
+            "These pieces of evidence should be tangible and not anectodes of the suspects. "
+            "None of these should directly implicate a character and ruin the game. "
+            "They should rather give some context to the player so they can bring them up when interviewing suspects. "
+            "The killer should remain the same.\n\n"
+            )
+
+        prompt = ChatPromptTemplate.from_template(
+        pre_prompt + self.backstory
+        )
+
+        return prompt
+    
+    def create_chain(self):
+        # Set up a parser + inject instructions into the prompt template.
+        extraction_functions = [convert_to_openai_function(StoryWithEvidence)]
+        extraction_model = self.model.bind(functions=extraction_functions, function_call={"name": "StoryWithEvidence"})
+        chain = self.prompt | extraction_model | JsonOutputFunctionsParser()
+        return chain
+
+class Evidence(BaseModel):
+    """Information about a person."""
+    name: str = Field(description="Name of the piece of evidence")
+    spoiler_description: str = Field(description="Detailed description of the evidence and who it relates to accesible to the game developers and not the player")
+    spoiler_free_description: str = Field(description="Spoiler free but detailed description of the evidence that the player can see and use as context in their quest to solve the mystery")
+
+class StoryWithEvidence(BaseModel):
+    """Information to extract."""
+    people: List[Evidence] = Field(description="List of all pieces of evidence")
+    updated_story: str = Field(description="Updated story with evidence added")
 
 class QuestionCap:
     def __init__(self, model_name='gpt-4o-mini', temperature= 0.0):
