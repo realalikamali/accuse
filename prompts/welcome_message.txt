@@ -1,6 +1,6 @@
 Welcome to Accuse, an interactive chat-based adventure, where you take the role of a detective and interview suspects to solve a mysterious murder case.
 
-Two men, James and Alex, and two women, Jennifer and Cindy, all in their mid to late twenties, go on a camping trip together for a week.Alex is found shot dead on the morning of their 7th day together.
+Two men, James and Alex, and two women, Jennifer and Cindy, all in their mid to late twenties, go on a camping trip together for a week. Alex is found shot dead on the morning of their 7th day together.
 
 Select a character to interview from the sidebar and ask questions to uncover the truth!
 

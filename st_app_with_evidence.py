@@ -7,6 +7,8 @@ from models.controls import QuestionCap, KnowItAll, POVExtractor, EvidenceExtrac
 from PIL import Image
 import random
 
+# Version of st_app.py with auto-generated evidence to be used in interactions with the characters
+
 _ = load_dotenv(find_dotenv()) # read local .env file
 openai.api_key = os.environ['OPENAI_API_KEY']
 
@@ -57,12 +59,15 @@ if 'number_of_messages' not in st.session_state:
     st.session_state.number_of_messages = {}
     for character in ['Jennifer', 'Cindy', 'James']:
         st.session_state.number_of_messages[character] = 0
+
 if 'messages' not in st.session_state:
     st.session_state.messages = {}
     for character in ['Jennifer', 'Cindy', 'James']:
         st.session_state.messages[character] = []
+
 if 'agents' not in st.session_state:
     st.session_state.agents = agents
+
 if 'more_than_one_question' not in st.session_state:
     st.session_state.more_than_one_question = False
 
@@ -77,8 +82,9 @@ if 'individual_povs' not in st.session_state:
 
 radio = st.sidebar.radio(
     "Select mode:",
-    ["Intro", "First-round Interview","Second-round Interview", "Solve","Spoiler"],
+    ["Intro", "Evidence", "First-round Interview","Second-round Interview", "Solve","Spoiler"],
     key="radio")
+
 container_top = st.empty()
 container_bottom = st.empty()
 
@@ -88,17 +94,23 @@ if radio == "Intro":
         welcome_message = file.read()
     welcome_message = welcome_message.format(permissible_length_of_chat = 10)
 
-    pieces_of_evidence_description = ""
-    for person in pieces_of_evidence:
-        pieces_of_evidence_description += f"{person['name']}: {person['spoiler_free_description']}\n\n"
-
-    container_top.write(welcome_message+ '\n\nPieces of evidence:\n\n' + pieces_of_evidence_description)
+    container_top.write(welcome_message)
 
     # Read the cover photo
     cover_photo = Image.open("m_mystery_cover_photo.webp")
 
     # Show the cover photo on the page
     container_bottom.image(cover_photo)
+
+elif radio == "Evidence":
+    container_top.header('Pieces of evidence')
+    container_bottom.empty()
+    pieces_of_evidence_description = ""
+    for person in pieces_of_evidence:
+        pieces_of_evidence_description += f"{person['name']}: {person['spoiler_free_description']}\n\n"
+
+    container_bottom.write(pieces_of_evidence_description)
+
 
 elif radio == 'First-round Interview':
     container_top.empty()
