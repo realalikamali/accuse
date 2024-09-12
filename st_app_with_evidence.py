@@ -21,7 +21,7 @@ if 'api_key' not in st.session_state:
     st.session_state.api_key = ''
 
 st.session_state.api_key = container_api.text_input("Enter your OpenAI API key")
-openai.api_key = os.environ['OPENAI_API_KEY']
+openai.api_key = st.session_state.api_key
 
 @st.cache_resource
 def startup_proceses():

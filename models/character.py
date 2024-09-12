@@ -1,7 +1,4 @@
 from langchain_openai import ChatOpenAI
-import os
-import openai
-from dotenv import load_dotenv, find_dotenv
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.output_parsers import StrOutputParser
