@@ -4,11 +4,12 @@ from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.output_parsers import StrOutputParser
 
 class Character:
-    def __init__(self, character_name, character_story_path, model_name='gpt-4o-mini', temperature= 0.1):
+    def __init__(self, character_name, character_story_path, openai_api_key, model_name='gpt-4o-mini', temperature= 0.1):
         self.character_name = character_name
         self.character_story_path = character_story_path
         self.model_name = model_name
         self.temperature = temperature
+        self.openai_api_key = openai_api_key
 
         self.model = self.initialize_model()
         self.prompt = self.create_prompt()
@@ -16,7 +17,7 @@ class Character:
         self.chat_history = ChatMessageHistory()
     
     def initialize_model(self):
-        model = ChatOpenAI(model=self.model_name)
+        model = ChatOpenAI(model=self.model_name, openai_api_key=self.openai_api_key)
         model.temperature = self.temperature
         return model
     
@@ -41,12 +42,13 @@ class Character:
         return chain
     
 class CharacterGen:
-    def __init__(self, backstory, character_name, character_story_path, model_name='gpt-4o-mini', temperature= 0.1):
+    def __init__(self, backstory, character_name, character_story_path, openai_api_key, model_name='gpt-4o-mini', temperature= 0.1):
         self.backstory = backstory
         self.character_name = character_name
         self.character_story_path = character_story_path
         self.model_name = model_name
         self.temperature = temperature
+        self.openai_api_key = openai_api_key
 
         self.model = self.initialize_model()
         self.prompt = self.create_prompt()
@@ -54,7 +56,7 @@ class CharacterGen:
         self.chat_history = ChatMessageHistory()
     
     def initialize_model(self):
-        model = ChatOpenAI(model=self.model_name)
+        model = ChatOpenAI(model=self.model_name, openai_api_key=self.openai_api_key)
         model.temperature = self.temperature
         return model
     

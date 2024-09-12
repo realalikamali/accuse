@@ -14,30 +14,31 @@ st.sidebar.subheader('An interactive chat-based adventure')
 
 container_api = st.empty()
 container_top = st.empty()
-container_bottom = st.empty()
+container_bottom = st.empty()   
+  
+# Prompt user for their API key
+if 'api_key' not in st.session_state:
+    st.session_state['api_key'] = None
 
-# set up api key session state variable
-if 'api_key' not in st.session_state:   
-    st.session_state.api_key = ''
+st.session_state['api_key'] = container_api.text_input("Enter your OpenAI API key:")
 
-st.session_state.api_key = container_api.text_input("Enter your OpenAI API key")
-openai.api_key = st.session_state.api_key
+
 
 @st.cache_resource
 def startup_proceses():
-    questioncap = QuestionCap()
-    knowitall = KnowItAll(os.path.join('prompts','initiation_prompt_omniscient.txt'), temperature=0.4)
+    questioncap = QuestionCap(st.session_state['api_key'])
+    knowitall = KnowItAll(os.path.join('prompts','initiation_prompt_omniscient.txt'), st.session_state['api_key'], temperature=0.4)
     # randomly choose a killer using np.random.choice
     killer = random.choice(['Jennifer', 'Cindy', 'James'])
     backstory = knowitall.chain.invoke({'killer': killer})
 
-    evidenceextractor = EvidenceExtractor(backstory, model_name='gpt-4o', temperature=0.4)
+    evidenceextractor = EvidenceExtractor(backstory, st.session_state['api_key'], model_name='gpt-4o', temperature=0.4)
     extracted_info = evidenceextractor.chain.invoke({})
 
     backstory = extracted_info['updated_story']
     pieces_of_evidence = extracted_info['people']
 
-    povextractor = POVExtractor(backstory, model_name='gpt-4o', temperature=0.0)
+    povextractor = POVExtractor(backstory, st.session_state['api_key'], model_name='gpt-4o', temperature=0.0)
     individual_povs = povextractor.chain.invoke({})
     # Create a dictionary of agents
     agents = {
@@ -45,6 +46,7 @@ def startup_proceses():
             character_name,
             individual_povs[character_name],
             os.path.join('prompts', (character_name + '_backstory.txt')),
+            st.session_state['api_key'],
             model_name='gpt-4o',
             temperature=0.1
         )

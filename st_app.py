@@ -12,10 +12,9 @@ container_bottom = st.empty()
 
 # set up api key session state variable
 if 'api_key' not in st.session_state:   
-    st.session_state.api_key = ''
+    st.session_state.api_key = None
 
 st.session_state.api_key = container_api.text_input("Enter your OpenAI API key")
-openai.api_key = st.session_state.api_key
 
 st.sidebar.title('Accuse')
 # an interactive chat-based adventure
@@ -29,13 +28,13 @@ character_avatar_emojis = {'Jennifer': '👩',
 
 @st.cache_resource
 def startup_proceses():
-    questioncap = QuestionCap()
-    knowitall = KnowItAll(os.path.join('prompts','initiation_prompt_omniscient.txt'))
+    questioncap = QuestionCap(st.session_state['api_key'])
+    knowitall = KnowItAll(os.path.join('prompts','initiation_prompt_omniscient.txt'), st.session_state['api_key'])
     # randomly choose a killer using np.random.choice
     killer = random.choice(['Jennifer', 'Cindy', 'James'])
     backstory = knowitall.chain.invoke({'killer': killer})
 
-    povextractor = POVExtractor(backstory, model_name='gpt-4o', temperature=0.0)
+    povextractor = POVExtractor(backstory, st.session_state['api_key'], model_name='gpt-4o', temperature=0.0)
     individual_povs = povextractor.chain.invoke({})
     # Create a dictionary of agents
     agents = {
@@ -43,6 +42,7 @@ def startup_proceses():
             character_name,
             individual_povs[character_name],
             os.path.join('prompts', (character_name + '_backstory.txt')),
+            st.session_state['api_key'],
             model_name='gpt-4o',
             temperature=0.1
         )

@@ -14,17 +14,18 @@ from langchain_openai import ChatOpenAI
 from typing import List
 
 class KnowItAll:
-    def __init__(self, prompt_path, model_name='gpt-4o', temperature= 0.2):
+    def __init__(self, prompt_path, openai_api_key, model_name='gpt-4o', temperature= 0.2):
 
         self.model_name = model_name
         self.temperature = temperature
         self.prompt_path = prompt_path
+        self.openai_api_key = openai_api_key
         self.model = self.initialize_model()
         self.prompt = self.create_prompt()
         self.chain = self.create_chain()
 
     def initialize_model(self):
-        model = ChatOpenAI(model=self.model_name)
+        model = ChatOpenAI(model=self.model_name, openai_api_key=self.openai_api_key)
         model.temperature = self.temperature
         return model
     
@@ -41,17 +42,18 @@ class KnowItAll:
         return chain
 
 class POVExtractor:
-    def __init__(self, backstory, model_name='gpt-4o', temperature= 0.0):
+    def __init__(self, backstory, openai_api_key, model_name='gpt-4o', temperature= 0.0):
 
         self.model_name = model_name
         self.temperature = temperature
         self.backstory = backstory
+        self.openai_api_key = openai_api_key
         self.model = self.initialize_model()
         self.prompt = self.create_prompt()
         self.chain = self.create_chain()
 
     def initialize_model(self):
-        model = ChatOpenAI(model=self.model_name)
+        model = ChatOpenAI(model=self.model_name, openai_api_key=self.openai_api_key)
         model.temperature = self.temperature
         return model
 
@@ -84,17 +86,18 @@ class EventsRecounting(BaseModel):
     James: str = Field(description="Description of the events from James' point of view in first person")
 
 class EvidenceExtractor:
-    def __init__(self, backstory, model_name='gpt-4o', temperature= 0.2):
+    def __init__(self, backstory, openai_api_key, model_name='gpt-4o', temperature= 0.2):
 
         self.model_name = model_name
         self.temperature = temperature
         self.backstory = backstory
+        self.openai_api_key = openai_api_key
         self.model = self.initialize_model()
         self.prompt = self.create_prompt()
         self.chain = self.create_chain()
 
     def initialize_model(self):
-        model = ChatOpenAI(model=self.model_name)
+        model = ChatOpenAI(model=self.model_name, openai_api_key=self.openai_api_key)
         model.temperature = self.temperature
         return model
 
@@ -136,18 +139,19 @@ class StoryWithEvidence(BaseModel):
     updated_story: str = Field(description="Updated story with evidence added")
 
 class QuestionCap:
-    def __init__(self, model_name='gpt-4o-mini', temperature= 0.0):
+    def __init__(self, openai_api_key, model_name='gpt-4o-mini', temperature= 0.0):
 
         self.model_name = model_name
         self.temperature = temperature
         self.tagging_functions = [convert_to_openai_function(Tagging)]
+        self.openai_api_key = openai_api_key
         self.model = self.initialize_model()
         self.prompt = self.create_prompt()
         self.tagging_chain = self.create_tagging_chain()
 
     
     def initialize_model(self):
-        model = ChatOpenAI(model=self.model_name)
+        model = ChatOpenAI(model=self.model_name, openai_api_key=self.openai_api_key)
         model.temperature = self.temperature
         return model
 
