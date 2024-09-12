@@ -26,8 +26,7 @@ character_avatar_emojis = {'Jennifer': '👩',
                            'Cindy': '👩‍🦱',
                            'James': '👨'}
 
-@st.cache_resource
-def startup_proceses():
+def startup_processes():
     questioncap = QuestionCap(st.session_state['api_key'])
     knowitall = KnowItAll(os.path.join('prompts','initiation_prompt_omniscient.txt'), st.session_state['api_key'])
     # randomly choose a killer using np.random.choice
@@ -57,7 +56,13 @@ if st.session_state.api_key:
     container_top.empty()
     container_bottom.empty()
 
-    questioncap, killer, backstory, individual_povs, agents = startup_proceses()
+    # Check if the process has already been run for this user session
+    if 'startup_data' not in st.session_state:
+        with st.spinner(text="Model loading in progress... It might take about a minute."):
+            st.session_state['startup_data'] = startup_processes()
+
+    # Retrieve the cached data for the current user
+    questioncap, killer, backstory, individual_povs, agents = st.session_state['startup_data']
 
     # set up session state variables
     if 'number_of_messages' not in st.session_state:
