@@ -70,7 +70,7 @@ if st.session_state.api_key:
             st.session_state['startup_data'] = startup_processes()
 
     # Retrieve the cached data for the current user
-    questioncap, killer, backstory, individual_povs, agents = st.session_state['startup_data']
+    questioncap, killer, pieces_of_evidence, backstory, individual_povs, agents = st.session_state['startup_data']
 
     # set up session state variables
     if 'number_of_messages' not in st.session_state:
