@@ -1,6 +1,6 @@
 ## Accuse
 Welcome to Accuse, an interactive chat-based adventure, where you take the role of a detective and interview suspects to solve a mystery.
-
+Click [here](https://accuse.streamlit.app/) for a live demo of the game deployed on Streamlit Cloud.
 ![alt text](https://github.com/realalikamali/accuse/blob/main/m_mystery_cover_photo.webp)
 
 This project explores the capability of language models to facilitate interactive, engaging, and entertaining ways of storytelling.
