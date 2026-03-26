@@ -5,6 +5,15 @@ from models.character import CharacterGen
 from models.controls import QuestionCap, KnowItAll, POVExtractor, EvidenceExtractor
 from PIL import Image
 import random
+from langchain.globals import set_llm_cache
+from langchain_core.caches import InMemoryCache
+
+
+@st.cache_resource
+def get_llm_cache():
+    return InMemoryCache()
+
+set_llm_cache(get_llm_cache())
 
 # Version of st_app.py with auto-generated evidence to be used in interactions with the characters
 
@@ -140,9 +149,9 @@ elif radio == 'First-round Interview':
 
     # Input prompt from the user
     prompt = st.chat_input("Enter your message here:", key="input_" + character)
-    st.session_state.more_than_one_question = questioncap.invoke(prompt)
 
     if prompt:
+        st.session_state.more_than_one_question = questioncap.invoke(prompt)
         # Check if any character has between 0 and permissible_length_of_chat messages
         chat_needs_to_end = False
         for char, num_messages in st.session_state.number_of_messages.items():
@@ -211,9 +220,9 @@ elif radio == 'Second-round Interview':
 
     # Input prompt from the user
     prompt = st.chat_input("Enter your message here:", key="input_" + character)
-    st.session_state.more_than_one_question = questioncap.invoke(prompt)
 
     if prompt:
+        st.session_state.more_than_one_question = questioncap.invoke(prompt)
         # Check if any character has between 0 and permissible_length_of_chat messages
         chat_needs_to_end = False
 
