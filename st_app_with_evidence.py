@@ -37,8 +37,8 @@ def startup_processes():
     # Create a dictionary of agents
     agents = {
         character_name: CharacterGen(
-            character_name,
             individual_povs[character_name],
+            character_name,
             os.path.join('prompts', (character_name + '_backstory.txt')),
             st.session_state['api_key'],
             model_name='gpt-4o',

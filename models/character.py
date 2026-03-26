@@ -1,6 +1,6 @@
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_community.chat_message_histories import ChatMessageHistory
+from langchain_core.chat_history import InMemoryChatMessageHistory
 from langchain_core.output_parsers import StrOutputParser
 
 class Character:
@@ -14,7 +14,7 @@ class Character:
         self.model = self.initialize_model()
         self.prompt = self.create_prompt()
         self.chain = self.create_chain()
-        self.chat_history = ChatMessageHistory()
+        self.chat_history = InMemoryChatMessageHistory()
     
     def initialize_model(self):
         model = ChatOpenAI(model=self.model_name, openai_api_key=self.openai_api_key)
@@ -53,7 +53,7 @@ class CharacterGen:
         self.model = self.initialize_model()
         self.prompt = self.create_prompt()
         self.chain = self.create_chain()
-        self.chat_history = ChatMessageHistory()
+        self.chat_history = InMemoryChatMessageHistory()
     
     def initialize_model(self):
         model = ChatOpenAI(model=self.model_name, openai_api_key=self.openai_api_key)

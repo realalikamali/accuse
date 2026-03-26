@@ -4,3 +4,6 @@ __pycache__/
 *.env
 *.ipynb_checkpoints/
 *.ipynb
+
+# Streamlit secrets (never commit)
+.streamlit/secrets.toml
