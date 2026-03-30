@@ -56,9 +56,24 @@ class POVExtractor:
         instructions = (
             "The following is the events leading up to someone's murder on a camping trip.\n\n"
             + self.backstory
-            + "\n\nRecount the events from each character's point of view in a detailed manner."
-            " Include their thoughts, feelings, and actions. Use first person perspective."
-            " Ensure that the recounting done by the three characters do not contradict each other"
+            + "\n\nGenerate a first-person account for each of the three suspects — Jennifer, Cindy, and James."
+            " Follow these requirements precisely:\n\n"
+            "For the KILLER's account: include their private knowledge — the specific decision to act,"
+            " the exact steps they took (timing, location, method), their emotional state before and after,"
+            " and the cover story they plan to maintain with the detective."
+            " This is the killer's true inner account, not their interview-ready version."
+            " It must contain details that would be incriminating if revealed.\n\n"
+            "For each INNOCENT character's account: include at least two specific, concrete observations"
+            " of the killer's suspicious behavior during the week — things they noticed but may not have"
+            " fully understood at the time (an unexplained absence, overheard words, unusual behavior"
+            " around a specific time or object, access to something they shouldn't have)."
+            " Also include one personal matter the character is keeping private that is unrelated to the"
+            " murder but could make them look suspicious — a realistic red herring.\n\n"
+            "On consistency: accounts must not contradict each other on events multiple characters"
+            " witnessed together. But private moments, personal interpretations, and things only one"
+            " person observed will naturally differ between accounts — this is correct and expected.\n\n"
+            "Use specific details throughout: approximate times, named locations in the lodge or"
+            " surroundings, and fragments of overheard conversations where relevant."
         )
         prompt = ChatPromptTemplate.from_messages([("human", instructions)])
         return prompt
@@ -102,8 +117,10 @@ class EvidenceExtractor:
             "and create an updated story that incorporates those components directly into the story "
             "rather than stating them after the end of the events. "
             "These pieces of evidence should be tangible and not anecdotes of the suspects. "
-            "None of these should directly implicate a character and ruin the game. "
-            "They should rather give some context to the player so they can bring them up when interviewing suspects. "
+            "Evidence should be suggestive but not immediately conclusive — it should narrow suspicion "
+            "and give the detective concrete leads to follow up on with the suspects, but stop short of "
+            "making the answer obvious on its own. At least one piece of evidence should point more "
+            "toward the killer than the others. "
             "The killer should remain the same.\n\n"
         )
         prompt = ChatPromptTemplate.from_messages([("human", pre_prompt + self.backstory)])

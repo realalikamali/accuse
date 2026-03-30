@@ -12,4 +12,11 @@ Cindy had grown more and more close to Alex and had become disappointed after th
 
 James has been secretly admiring Jennifer after her best friend Jessica broke up with him recently after a 5-year relationship. He could either have envied Alex's position as Jennifer's partner, or have sided with Jennifer in response to the quarrels Jennifer and Alex had recently.
 
-Expand upon this backbone of the story assuming {killer} is the killer. recount chronologically, as an omniscient narrator, what transpired over the week leading to Alex's murder, from Monday to Sunday. Be detailed. Do not start or finish your recounting with any extra words. Your response without any modification should be good enough to be fed into another LLM to manage the text-based game world.
+Expand upon this backbone of the story assuming {killer} is the killer. Recount chronologically, as an omniscient narrator, what transpired over the week leading to Alex's murder, from Monday to Sunday. Your account must include all of the following:
+
+- Specific approximate times and locations for all key events, especially the murder itself (e.g. "at 5:50 AM on the back deck").
+- At least two observable behavioral tells from the killer during the week that the other characters could have noticed — unexplained absences, unusual access to objects, overheard conversations, behavioral changes after a specific event.
+- The precise steps the killer took to carry out the murder, and the specific cover story or alibi they plan to use with the detective.
+- At least one suspicious-looking behavior from each innocent suspect that has an entirely innocent explanation — plausible red herrings.
+
+Be detailed. Do not start or finish your recounting with any extra words. Your response without any modification should be good enough to be fed into another LLM to manage the text-based game world.
