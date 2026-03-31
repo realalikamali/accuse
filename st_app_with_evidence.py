@@ -12,7 +12,7 @@ from PIL import Image
 from models.character import CharacterGen
 from models.controls import QuestionCap
 
-from langchain.globals import set_llm_cache
+from langchain_core.globals import set_llm_cache
 from langchain_core.caches import InMemoryCache
 
 
