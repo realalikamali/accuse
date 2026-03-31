@@ -144,8 +144,9 @@ if radio == "Intro":
     welcome_message = welcome_message.format(
         number_of_interactions=int(permissible_length_of_chat / 2)
     )
-    container_top.write(welcome_message)
-    container_top.caption(f"Case #{st.session_state.story_number:02d}")
+    with container_top.container():
+        st.markdown(welcome_message)
+        st.caption(f"Case #{st.session_state.story_number:02d}")
     cover_photo = Image.open("m_mystery_cover_photo.webp")
     container_bottom.image(cover_photo)
 
